@@ -7,7 +7,7 @@ import re
 
 from prettytable import PrettyTable
 
-from analysis import Analysis, frequency_table
+from analysis import Analysis, FrequencyTable
 
 class CharsetAnalysis(Analysis):
 
@@ -35,7 +35,8 @@ class CharsetAnalysis(Analysis):
                 self.charset_counts[key] += 1
 
     def report(self):
-        total = self.word_count
-        table = frequency_table("Charset", self.charset_counts, total);
+        table = FrequencyTable("Charset")
+
+        table.add_counts(self.word_count, self.charset_counts)
 
         return table

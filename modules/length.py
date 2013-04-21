@@ -4,9 +4,7 @@ Analyzes the length of words in a wordlist.
 
 from collections import defaultdict
 
-from prettytable import PrettyTable
-
-from analysis import Analysis, frequency_table
+from analysis import Analysis, AnalysisTable, FrequencyTable
 
 class LengthAnalysis(Analysis):
 
@@ -24,16 +22,10 @@ class LengthAnalysis(Analysis):
 
     def report(self):
         """
-        Reports occurences of length and summary
+        Reports occurences of length
         """
-        total = sum([c for c in self.length_counts.values()]) 
-        lengths = self.length_counts.keys()
+        table = FrequencyTable("Length", sortby="Length")
 
-        table = PrettyTable(["Total Words", "Min", "Max"])
-        table.add_row([total, min(lengths), max(lengths)])
-        report = str(table)
- 
-        report += "\n\n"
-        report += str(frequency_table("Length", self.length_counts, self.word_count))
+        table.add_counts(self.word_count, self.length_counts)
 
-        return report
+        return table

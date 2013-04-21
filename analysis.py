@@ -19,7 +19,8 @@ def main():
     analysis_classes = find_analysis_classes("modules")
 
     parser = argparse.ArgumentParser(
-        description="Analyzes wordlists and prints pretty descriptions."
+        description="Analyzes wordlists and prints pretty descriptions.",
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
     )
     parser.add_argument(
         "wordlist",
@@ -36,12 +37,16 @@ def main():
         help="Expected file encoding",
         default="raw",
     )
-#    parser.add_argument(
-#        "--limit",
-#        help="The number of results to cap at in long reports",
-#        type=int,
-#        default=10,
-#    )
+    parser.add_argument(
+        "--greppable",
+        help="An output able to easily be processed",
+        action='store_true',
+    )
+    parser.add_argument(
+        "--top",
+        help="The number of rows to cap at in long reports",
+        default=20,
+    )
     args = parser.parse_args()
 
     analysis = analysis_classes[args.analysis]()
@@ -55,7 +60,14 @@ def main():
     for word in words:
         analysis.process(word)
     
-    print analysis
+    table = analysis.report()
+    if args.top != "all":
+        table.trim(int(args.top))
+
+    if args.greppable:
+        print table.greppable()
+    else:
+        print table
 
 def find_analysis_classes(module_dir):
     analyses = {}
@@ -66,7 +78,8 @@ def find_analysis_classes(module_dir):
             continue
 
         analysis_name = re.sub("\.py$", "", filename)
-        mod = importlib.import_module("%s.%s" % (module_dir, analysis_name))
+        mod_name = "%s.%s" % (module_dir, analysis_name)
+        mod = importlib.import_module(mod_name)
 
         analysis = None
         for name, member in inspect.getmembers(mod, inspect.isclass):
@@ -104,17 +117,39 @@ class Analysis(object):
     def __str__(self):
         return str(self.report())
 
-def frequency_table(key_header, counts, total):
-    rows = []
-    for key, count in counts.iteritems():
-        percent = round(count / float(total) * 100, 2)
-        rows.append([key, percent, count])
+class AnalysisTable(PrettyTable):
 
-    table = PrettyTable([key_header, "Percentage", "Count"])
-    for row in rows:
-        table.add_row(row)
+    def greppable(self, sep=':'):
+        options = self._get_options({})
 
-    return table
+        output = "#" + sep.join(self._field_names)
+        for row in self._get_rows(options):
+            output += "\n" + sep.join(map(str, row))
+
+        return output
+
+    def trim(self, n):
+        """
+        Reduce to n rows.
+        """
+        options = self._get_options({})
+        self._rows = self._get_rows(options)[:n]
+
+class FrequencyTable(AnalysisTable):
+
+    def __init__(self, primary_field, **kwargs):
+        """
+        Adds Percentage and Count columns. The are calculated
+        when add_counts is called. Same arguments as AnalysisTable.
+        """
+        field_names = [primary_field, "Percentage", "Count"]
+        
+        super(FrequencyTable, self).__init__(field_names, **kwargs)
+
+    def add_counts(self, total, counts):
+        for key, count in counts.iteritems():
+            percent = round(count / float(total) * 100, 2)
+            self.add_row([key, percent, count])
 
 if __name__ == "__main__":
     main()

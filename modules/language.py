@@ -7,7 +7,7 @@ import re
 
 import enchant
 
-from analysis import Analysis, frequency_table
+from analysis import Analysis, FrequencyTable
 
 class LanguageAnalysis(Analysis):
     """
@@ -36,4 +36,8 @@ class LanguageAnalysis(Analysis):
                 self.language_count[lang] += 1
 
     def report(self):
-        return frequency_table("Language", self.language_count, self.word_count)
+        table = FrequencyTable("Language", sortby="Count")
+
+        table.add_counts(self.word_count, self.language_count)
+
+        return table

@@ -124,7 +124,7 @@ class AnalysisTable(PrettyTable):
 
         output = "#" + sep.join(self._field_names)
         for row in self._get_rows(options):
-            output += "\n" + sep.join(map(str, row))
+            output += "\n" + sep.join(map(unicode, row))
 
         return output
 

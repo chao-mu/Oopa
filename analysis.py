@@ -47,6 +47,11 @@ def main():
         help="The number of rows to cap at in long reports",
         default=20,
     )
+    parser.add_argument(
+        "--sort",
+        help="The column to sort on",
+        default=None,
+    )
     args = parser.parse_args()
 
     analysis = analysis_classes[args.analysis]()
@@ -63,6 +68,10 @@ def main():
     table = analysis.report()
     if args.top != "all":
         table.trim(int(args.top))
+
+    if args.sort is not None:
+        table.reversesort = True
+        table.sortby = args.sort
 
     if args.greppable:
         print table.greppable()

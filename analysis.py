@@ -153,7 +153,11 @@ class FrequencyTable(AnalysisTable):
         when add_counts is called. Same arguments as AnalysisTable.
         """
         field_names = [primary_field, "Percentage", "Count"]
-        
+
+        if "sortby" not in kwargs:
+            kwargs["reversesort"] =True
+            kwargs["sortby"] = "Count" 
+
         super(FrequencyTable, self).__init__(field_names, **kwargs)
 
     def add_counts(self, total, counts):

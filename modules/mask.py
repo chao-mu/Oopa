@@ -40,7 +40,7 @@ class MaskAnalysis(Analysis):
         """
         Reports mask frequency
         """
-        table = FrequencyTable("Hashcat Mask", sortby="Count")
+        table = FrequencyTable("Hashcat Mask", reversesort=True, sortby="Count")
 
         table.add_counts(self.word_count, self.mask_counts)
 

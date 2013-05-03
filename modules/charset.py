@@ -43,7 +43,7 @@ class CharsetAnalysis(Analysis):
                 self.charset_counts[key] += 1
 
     def report(self):
-        table = FrequencyTable("Charset")
+        table = FrequencyTable("Charset", end=len(self.charset_counts))
 
         table.add_counts(self.word_count, self.charset_counts)
 

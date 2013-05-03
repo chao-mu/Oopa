@@ -45,7 +45,7 @@ def main():
     parser.add_argument(
         "--top",
         help="The number of rows to cap at in long reports",
-        default=20,
+        default=10,
     )
     parser.add_argument(
         "--sort",
@@ -61,8 +61,7 @@ def main():
     else:
         wordlist = codecs.open(args.wordlist, 'r', args.encoding) 
 
-    words = wordlist.read().splitlines()
-    for word in words:
+    for word in wordlist.read().splitlines():
         analysis.process(word)
     
     table = analysis.report()
@@ -71,8 +70,8 @@ def main():
         table.reversesort = True
         table.sortby = args.sort
 
-    if args.top != "all":
-        table.trim(int(args.top))
+    if args.top != "all" and table.end is None:
+        table.end = int(args.top)
 
     if args.greppable:
         print table.greppable()
@@ -137,13 +136,6 @@ class AnalysisTable(PrettyTable):
             output += "\n" + sep.join(map(unicode, row))
 
         return output
-
-    def trim(self, n):
-        """
-        Reduce to n rows.
-        """
-        options = self._get_options({})
-        self._rows = self._get_rows(options)[:n]
 
 class FrequencyTable(AnalysisTable):
 

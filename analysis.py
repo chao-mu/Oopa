@@ -129,6 +129,10 @@ class Analysis(object):
 class AnalysisTable(PrettyTable):
 
     def greppable(self, sep=':'):
+        """
+        The table as a string that's grep friendly.
+        Field names prefixed by #
+        """
         options = self._get_options({})
 
         output = "#" + sep.join(self._field_names)

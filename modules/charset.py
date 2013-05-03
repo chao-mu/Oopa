@@ -12,7 +12,7 @@ from analysis import Analysis, FrequencyTable
 class CharsetAnalysis(Analysis):
 
     def __init__(self):
-        # We use an OrderedDict so reporting is consistent.
+        # We use an OrderedDict so that order is preserved in rows.
         self.charsets = OrderedDict([
             ["Lower Alpha", r'^[a-z]+$'],
             ["Upper Alpha", r'^[A-Z]+$'],

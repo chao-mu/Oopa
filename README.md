@@ -1,4 +1,4 @@
-Oopa is a password/wordlist analyser. It is highly modular, allowing users to write their own analyzers in Python with minimal effort. It supports user supports user-supplied encoding and output can be heavily customized.
+Oopa is a password/wordlist analyser. It is highly modular, allowing users to write their own analyzers in Python with minimal effort. It supports user-supplied encoding and output can be heavily customized.
 
 Some of the modules were inspired by Pipal features, though the implementation differs drastically.
 

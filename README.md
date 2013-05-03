@@ -1,0 +1,1 @@
+OOPA is a password analyser heavily inspired by Pipal (http://www.digininja.org/projects/pipal.php). It differentiates itself by being highly modular, supporting user-supplied encoding, and having customizable output. Connsider this software so in Alpha stage that it's in Omega. In fact, you mine as well just go use Pipal.

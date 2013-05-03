@@ -66,12 +66,13 @@ def main():
         analysis.process(word)
     
     table = analysis.report()
-    if args.top != "all":
-        table.trim(int(args.top))
 
     if args.sort is not None:
         table.reversesort = True
         table.sortby = args.sort
+
+    if args.top != "all":
+        table.trim(int(args.top))
 
     if args.greppable:
         print table.greppable()

@@ -1,4 +1,4 @@
-OOPA!
+About
 -----
 
 Oopa is a password/wordlist analyser. It is highly modular, allowing users to write their own analyzers in Python with minimal effort. It supports user-supplied encoding and output can be heavily customized.
@@ -85,3 +85,7 @@ You can change the column sorting is based on with --sort.
     |   12   |    1.36    |  2505 |
     |   13   |    0.55    |  1018 |
     +--------+------------+-------+
+
+Name
+----
+OOPA was briefly an acronym, before I forgot what it stood for.

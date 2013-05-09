@@ -1,3 +1,5 @@
+import copy
+
 from prettytable import PrettyTable
 
 class AnalysisTable(PrettyTable):

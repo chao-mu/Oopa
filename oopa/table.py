@@ -2,6 +2,25 @@ from prettytable import PrettyTable
 
 class AnalysisTable(PrettyTable):
 
+    def _get_rows(self, options):
+        """
+        Taken and modified from prettytable.py until the following is resolved:
+        https://code.google.com/p/prettytable/issues/detail?id=29
+        """
+        rows = copy.deepcopy(self._rows)
+
+        # Sort if necessary
+        if options["sortby"]:
+            sortindex = self._field_names.index(options["sortby"])
+            # Decorate
+            rows = [[row[sortindex]]+row for row in rows]
+            # Sort
+            rows.sort(reverse=options["reversesort"], key=options["sort_key"])
+            # Undecorate
+            rows = [row[1:] for row in rows]
+
+        return rows[options["start"]:options["end"]]
+
     def greppable(self, sep=':'):
         """
         The table as a string that's grep friendly.

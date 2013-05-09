@@ -8,6 +8,7 @@ Consider this software so in Alpha stage that it's in Omega. In fact, you mine a
 Examples
 -------
 You specify a module with the --analysis argument. Default output is top 10.
+
     $ python oopa.py --analysis keyword wordlists/phpbb.txt 
     +----------+-------+
     | Keyword  | Count |
@@ -24,7 +25,8 @@ You specify a module with the --analysis argument. Default output is top 10.
     |   alex   |   58  |
     +----------+-------+
 
-You can view the same data in a more parse-friendly format with --greppable
+You can view the same data in a more parse-friendly format with --greppable.
+
     $ python oopa.py --analysis keyword wordlists/phpbb.txt --greppable
     #Keyword:Count
     phpbb:332
@@ -38,7 +40,8 @@ You can view the same data in a more parse-friendly format with --greppable
     qwerty:59
     alex:58
 
-You can change the number of results with --top
+You can change the number of results with --top.
+
     $ python oopa.py --analysis length wordlists/phpbb.txt --top 20
     +--------+------------+-------+
     | Length | Percentage | Count |
@@ -65,7 +68,8 @@ You can change the number of results with --top
     |   20   |    0.0     |   8   |
     +--------+------------+-------+
 
-You can change the column sorting is based on with --sort
+You can change the column sorting is based on with --sort.
+
     $ python oopa.py --analysis length wordlists/phpbb.txt  --sort Count
     +--------+------------+-------+
     | Length | Percentage | Count |
@@ -81,4 +85,3 @@ You can change the column sorting is based on with --sort
     |   12   |    1.36    |  2505 |
     |   13   |    0.55    |  1018 |
     +--------+------------+-------+
-

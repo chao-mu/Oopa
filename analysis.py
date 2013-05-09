@@ -52,21 +52,29 @@ def main():
         help="The column to sort on",
         default=None,
     )
+    parser.add_argument(
+        "--pot",
+        action="store_true",
+        help="Use with john.pot and hashcat's --output-file",
+    )
     args = parser.parse_args()
 
     analysis = analysis_classes[args.analysis]()
 
     if args.encoding == "raw":
-        wordlist = open(args.wordlist, 'r')
+        wordlist = open(args.wordlist, "r")
     else:
-        wordlist = codecs.open(args.wordlist, 'r', args.encoding) 
+        wordlist = codecs.open(args.wordlist, "r", args.encoding) 
 
     words = wordlist.read().splitlines()
+
+    if args.pot:
+        words = ["".join(word.split(":", 1)[1:]) for word in words]
+
     for word in words:
         analysis.process(word)
-    
-    table = analysis.report()
 
+    table = analysis.report() 
     if args.sort is not None:
         table.reversesort = True
         table.sortby = args.sort

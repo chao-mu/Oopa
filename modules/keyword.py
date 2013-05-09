@@ -2,7 +2,8 @@ from collections import defaultdict
 import operator
 import re
 
-from analysis import AnalysisTable, Analysis, FrequencyTable
+from oopa.analysis import Analysis
+from oopa.table import AnalysisTable
 
 CHAR_MIN = 3
 

@@ -12,7 +12,7 @@ import inspect
 import os
 import re
 
-from analysis import Analysis
+from oopa.analysis import Analysis
 
 def main():
     analysis_classes = find_analysis_classes("modules")

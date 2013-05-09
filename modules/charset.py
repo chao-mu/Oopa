@@ -5,8 +5,6 @@ Analyzes the character sets used in a wordlist.
 from collections import OrderedDict
 import re
 
-from prettytable import PrettyTable
-
 from analysis import Analysis, FrequencyTable
 
 class CharsetAnalysis(Analysis):

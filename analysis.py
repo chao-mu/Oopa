@@ -45,7 +45,7 @@ def main():
     parser.add_argument(
         "--top",
         help="The number of rows to cap at in long reports",
-        default=20,
+        default=10,
     )
     parser.add_argument(
         "--sort",
@@ -79,8 +79,8 @@ def main():
         table.reversesort = True
         table.sortby = args.sort
 
-    if args.top != "all":
-        table.trim(int(args.top))
+    if args.top != "all" and table.end is None:
+        table.end = int(args.top)
 
     if args.greppable:
         print table.greppable()
@@ -138,6 +138,10 @@ class Analysis(object):
 class AnalysisTable(PrettyTable):
 
     def greppable(self, sep=':'):
+        """
+        The table as a string that's grep friendly.
+        Field names prefixed by #
+        """
         options = self._get_options({})
 
         output = "#" + sep.join(self._field_names)
@@ -145,13 +149,6 @@ class AnalysisTable(PrettyTable):
             output += "\n" + sep.join(map(unicode, row))
 
         return output
-
-    def trim(self, n):
-        """
-        Reduce to n rows.
-        """
-        options = self._get_options({})
-        self._rows = self._get_rows(options)[:n]
 
 class FrequencyTable(AnalysisTable):
 

@@ -6,14 +6,13 @@ A tool to analyze wordlists
 
 import argparse
 import codecs
-from collections import OrderedDict
 import glob
 import importlib
 import inspect
 import os
 import re
 
-from prettytable import PrettyTable
+from analysis import Analysis
 
 def main():
     analysis_classes = find_analysis_classes("modules")
@@ -110,65 +109,6 @@ def find_analysis_classes(module_dir):
         analyses[analysis_name] = analysis
 
     return analyses
-
-class Analysis(object):
-
-    def __init__(self):
-        self.word_count = 0
-
-    def process(self, word):
-        self.word_count += 1
-        self.analyze(word)
-
-    def analyze(self, word):
-        """
-        Analyze a single value and update instance variables.
-        """
-        raise NotImplementedError
-
-    def report(self):
-        """
-        Report on analysis
-        """
-        raise NotImplementedError
-
-    def __str__(self):
-        return str(self.report())
-
-class AnalysisTable(PrettyTable):
-
-    def greppable(self, sep=':'):
-        """
-        The table as a string that's grep friendly.
-        Field names prefixed by #
-        """
-        options = self._get_options({})
-
-        output = "#" + sep.join(self._field_names)
-        for row in self._get_rows(options):
-            output += "\n" + sep.join(map(unicode, row))
-
-        return output
-
-class FrequencyTable(AnalysisTable):
-
-    def __init__(self, primary_field, **kwargs):
-        """
-        Adds Percentage and Count columns. The are calculated
-        when add_counts is called. Same arguments as AnalysisTable.
-        """
-        field_names = [primary_field, "Percentage", "Count"]
-
-        if "sortby" not in kwargs:
-            kwargs["reversesort"] =True
-            kwargs["sortby"] = "Count" 
-
-        super(FrequencyTable, self).__init__(field_names, **kwargs)
-
-    def add_counts(self, total, counts):
-        for key, count in counts.iteritems():
-            percent = round(count / float(total) * 100, 2)
-            self.add_row([key, percent, count])
 
 if __name__ == "__main__":
     main()

@@ -60,12 +60,7 @@ def main():
 
     analysis = analysis_classes[args.analysis]()
 
-    if args.encoding == "raw":
-        wordlist = open(args.wordlist, "r")
-    else:
-        wordlist = codecs.open(args.wordlist, "r", args.encoding) 
-
-    words = wordlist.read().splitlines()
+    words = read_wordlist(args.wordlist, args.encoding)
 
     if args.pot:
         words = ["".join(word.split(":", 1)[1:]) for word in words]
@@ -85,6 +80,14 @@ def main():
         print table.greppable()
     else:
         print table
+
+def read_wordlist(path, encoding="raw"):
+    if encoding == "raw":
+        wordlist = open(path, "r")
+    else:
+        wordlist = codecs.open(path, "r", encoding) 
+
+    return wordlist.read().splitlines()
 
 def find_analysis_classes(module_dir):
     analyses = {}

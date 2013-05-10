@@ -88,4 +88,4 @@ You can change the column sorting is based on with --sort.
 
 Name
 ----
-OOPA was briefly an acronym, before I forgot what it stood for.
+OOPA was briefly an acronym, but I forgot what it stood for.

@@ -6,16 +6,15 @@ A tool to analyze wordlists
 
 import argparse
 import codecs
-import glob
 import importlib
 import inspect
-import os
-import re
+import pkgutil
 
 from oopa.analysis import Analysis
+import oopa.modules
 
 def main():
-    analysis_classes = find_analysis_classes("modules")
+    analysis_classes = find_analysis_classes()
 
     parser = argparse.ArgumentParser(
         description="Analyzes wordlists and prints pretty descriptions.",
@@ -89,16 +88,18 @@ def read_wordlist(path, encoding="raw"):
 
     return wordlist.read().splitlines()
 
-def find_analysis_classes(module_dir):
+def find_analysis_classes():
     analyses = {}
-    for path in glob.glob(os.path.join(module_dir, "*.py")):
-        directory, filename = os.path.split(path)
 
-        if re.match("^__", filename):
+    package_itr = pkgutil.walk_packages(
+        path=oopa.modules.__path__,
+        prefix=oopa.modules.__name__ + "."
+    );
+
+    for importer, mod_name, is_package in package_itr:
+        if is_package:
             continue
 
-        analysis_name = re.sub("\.py$", "", filename)
-        mod_name = "%s.%s" % (module_dir, analysis_name)
         mod = importlib.import_module(mod_name)
 
         analysis = None
@@ -107,9 +108,9 @@ def find_analysis_classes(module_dir):
                 analysis = member
         
         if analysis is None:
-            raise Exception("Analysis subclass not found in %s" % (path))        
+            print "Error: Analysis subclass not found in %s" % (mod.__path__)
 
-        analyses[analysis_name] = analysis
+        analyses[mod_name.split(".")[-1]] = analysis
 
     return analyses
 
